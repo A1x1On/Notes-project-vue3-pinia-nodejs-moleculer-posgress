@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # Сервис для PostgreSQL
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Сервис для backend
+  backend:
+    build:
+      context: .  # Строим из корня проекта, где находится Dockerfile
+      dockerfile: backend/Dockerfile  # Указываем путь к Dockerfile для backend
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - 4005:4005
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    command: ["npx", "ts-node", "--transpile-only", "src/index.ts"]
+
+volumes:
+  db-data:

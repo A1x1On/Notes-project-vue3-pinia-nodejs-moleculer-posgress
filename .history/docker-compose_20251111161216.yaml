@@ -1,0 +1,120 @@
+version: '3.8'
+
+services:
+  # Сервис для PostgreSQL
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db-data:/var/lib/postgresql  # Меняем на правильный путь
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Сервис для backend
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - 4005:4005
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    command: ["dockerize", "-wait", "tcp://db:5432", "-timeout", "30s", "npx", "ts-node", "--transpile-only", "src/index.ts"]
+
+  # Сервис для frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    environment:
+      VUE_APP_API_URL: "http://backend:4005"
+    ports:
+      - 9000:3007
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Важно: исключаем node_modules из вольюма
+    working_dir: /app
+
+volumes:
+  db-data:
+
+
+
+
+
+# version: '3.8'
+
+
+# services:
+#   # Сервис для PostgreSQL
+#   db:
+#     image: postgres
+#     ports:
+#       - 5432:5432
+#     environment:
+#       POSTGRES_PASSWORD: ${DB_PASSWORD}
+#       POSTGRES_USER: ${DB_USER}
+#       POSTGRES_DB: ${DB_NAME}
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+
+#   # Сервис для backend
+#   backend:
+#     build:
+#       context: .
+#       dockerfile: backend/Dockerfile
+#     environment:
+#       - DB_HOST=db
+#       - DB_PORT=5432
+#       - DB_USER=${DB_USER}
+#       - DB_PASSWORD=${DB_PASSWORD}
+#       - DB_NAME=${DB_NAME}
+#     ports:
+#       - 4005:4005
+#     depends_on:
+#       - db
+#     volumes:
+#       - ./backend:/app
+#     command: ["npx", "ts-node", "--transpile-only", "src/index.ts"]
+
+  # Сервис для frontend
+#   frontend:
+#     build:
+#       context: .
+#       dockerfile: ./frontend/Dockerfile
+#     environment:
+#       VUE_APP_API_URL: "http://backend:4005"
+#     ports:
+#       - 8080:3007
+#     depends_on:
+#       - backend
+#     volumes:
+#       - ./frontend:/app
+#     working_dir: /app
+#     command: ["npm", "run", "dev"]
+
+# volumes:
+#   db-data:

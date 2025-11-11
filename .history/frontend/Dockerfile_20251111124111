@@ -1,0 +1,22 @@
+# Используем официальный Node.js образ (вместо arm64v8, если не требуется ARM64)
+FROM node:24.0.2
+
+WORKDIR /app
+
+# Копируем package.json и package-lock.json для установки зависимостей
+COPY ./frontend/package.json ./frontend/package-lock.json ./
+
+# Устанавливаем зависимости с флагом --legacy-peer-deps для решения проблем с несовместимостью
+RUN npm install --legacy-peer-deps --no-optional
+
+# Копируем все файлы проекта
+COPY . .
+
+# Строим приложение (для production или dev)
+RUN npm run build
+
+# Открываем порт для сервера
+EXPOSE 8080
+
+# Запускаем приложение
+CMD ["npm", "run", "dev"]

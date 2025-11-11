@@ -1,0 +1,128 @@
+
+html, body, #app {
+  overflow-y: auto;
+  height: 100%;
+}
+
+
+.v-application {
+  background: var(--gradient-color)
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  
+  &:hover {
+    text-decoration: none;
+
+  }
+}
+
+
+:root {
+  --text-color: #fff;
+  --text-color-2: #000;
+  --text-color-3: #2e72b0;
+  --link-color: #2e72b0;
+  --link-color-2: #000;
+  --disabled-color: #ccc;
+  --bg-color: #fff;
+  --bg-color-2: #2e72b0;
+  --bg-color-3: #337ab7;
+  --bg-glass: rgba(219, 236, 255, 0.5);
+  --gradient-color: linear-gradient(0deg, rgba(112,162,205,1) 0%, rgba(39,103,167,1) 100%);
+
+  --border-color: #fff;
+  --border-color-2: #e2e2e2;
+  --border-color-3: #a5a5a5;
+  --shadow-color: #111;
+  --border-radius: 5px;
+
+  --fs-title: 28px;
+  --fs-title-2: 24px;
+  --fs-title-3: 20px;
+  --fs-text: 18px;
+  --fs-text-2: 14px;
+  --fs-text-3: 12px;
+  --fs-text-4: 10px;
+  --fs-text-5: 9px;
+
+
+  .v-application {
+    background: var(--gradient-color)
+  }
+
+  .disabled { 
+    color: var(--disabled-color);
+    text-decoration: none;
+  }
+
+  .fs-title { font-size: var(--fs-title) }
+  .fs-title-2 { font-size: var(--fs-title-2) }
+  .fs-title-3 { font-size: var(--fs-title-3) }
+  .fs-text { font-size: var(--fs-text) }
+  .fs-text-2 { font-size: var(--fs-text-2) }
+  .fs-text-3 { font-size: var(--fs-text-3) }
+  .fs-text-4 { font-size: var(--fs-text-4) }
+  .fs-text-5 { font-size: var(--fs-text-5) }
+
+  .v-divider {
+    color: var(--border-color-2);
+    opacity: 1;
+  }
+
+  .text-color-3 {
+    color: var(--text-color-3)
+  }
+
+  .text-decoration-none {
+    text-decoration: none;
+  }
+
+  .fake-link {
+    // text-decoration: underline;
+    color: var(--link-color);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--link-color-2);
+      // text-decoration: none;
+      opacity: 0.5;
+    }
+  }
+
+  .icon-btn {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.9;
+    }
+    &:active {
+      opacity: 0.5;
+    }
+  }
+
+  .ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+:root .v-theme--dark {
+  // --text-color: #fee1e1;
+  // --text-color-2: #795656;
+  --text-color-3: #2e74b5;
+  --link-color: rgb(84, 94, 103);
+  --disabled-color: #7f7f7f;
+  --bg-color: #454545;
+  --bg-color-2: #2e74b5;
+  --bg-color-3: #114f84;
+  // --gradient-color: linear-gradient(0deg, rgb(84, 94, 103) 0%, rgb(19, 46, 72) 100%);
+  --gradient-color: linear-gradient(0deg, rgb(84, 94, 103) 100%, rgb(90, 100, 110) 0%);
+
+  --border-color: #aaaaaa;
+  --border-color-2: #7f7f7f;
+  // --shadow-color: #423939;
+  // --border-radius: 5px;
+}

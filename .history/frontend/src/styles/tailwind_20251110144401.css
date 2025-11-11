@@ -1,0 +1,6 @@
+/* src/styles/tailwind.css */
+
+/* Добавьте эти директивы в начало вашего CSS-файла */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

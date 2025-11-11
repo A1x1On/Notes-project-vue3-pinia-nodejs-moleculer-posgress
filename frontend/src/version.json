@@ -1,0 +1,4 @@
+{
+    "build_time": "DEV_BUILD_TIME",
+    "build_commit": "BUILD_COMMIT"
+}

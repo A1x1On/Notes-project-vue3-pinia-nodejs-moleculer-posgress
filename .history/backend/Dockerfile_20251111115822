@@ -1,0 +1,22 @@
+# Используем базовый образ Node.js на Alpine для меньшего размера
+FROM node:16-alpine
+
+WORKDIR /app
+
+# Копируем package.json и package-lock.json для установки зависимостей
+COPY backend/package.json backend/package-lock.json ./
+
+# Устанавливаем зависимости проекта
+RUN npm install
+
+# Копируем все файлы проекта
+COPY backend/ .
+
+# Устанавливаем глобальные зависимости для TypeScript и ts-node
+RUN npm install -g ts-node typescript dockerize
+
+# Открываем порт для сервера
+EXPOSE 4005
+
+# Используем dockerize для ожидания базы данных и запуска сервера
+CMD dockerize -wait tcp://db:5432 -timeout 30s npx ts-node --transpile-only src/index.ts

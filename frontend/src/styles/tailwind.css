@@ -1,0 +1,51 @@
+@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+  --color-neutral-0: #111;
+}
+
+.t-btn--primary {
+  @apply px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 cursor-pointer;
+}
+
+.t-btn--secondary {
+  @apply px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 cursor-pointer;
+}
+
+.t-btn--success {
+  @apply px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 focus:ring-2 focus:ring-green-500 cursor-pointer;
+}
+
+.t-btn--danger {
+  @apply px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 cursor-pointer;
+}
+
+.t-btn--outline {
+  @apply px-4 py-2 border-2 border-blue-500 text-blue-500 rounded-md hover:bg-blue-500 hover:text-white focus:ring-2 focus:ring-blue-500;
+}
+
+.t-btn--outline-secondary {
+  @apply px-4 py-2 border-2 border-gray-500 text-gray-700 rounded-md hover:bg-gray-500 hover:text-white focus:ring-2 focus:ring-gray-500;
+}
+
+.t-btn--disabled {
+  @apply px-4 py-2 bg-gray-300 text-gray-500 rounded-md cursor-not-allowed;
+}
+
+.t-btn--link {
+  @apply px-4 py-2 text-blue-500 bg-transparent border-0 underline hover:text-blue-700 cursor-pointer;
+}
+
+.t-input {
+  @apply px-2 py-1 bg-gray-200 text-black rounded-md border-2 border-transparent focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+}
+
+.t-modal {
+  background-color: rgba(128, 128, 128, 0.5);
+  @apply fixed inset-0 flex items-center justify-center z-50;
+}
+
+

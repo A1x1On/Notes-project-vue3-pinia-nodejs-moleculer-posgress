@@ -1,0 +1,86 @@
+{
+
+  "/portal/*": {
+    "target": "https://dev.submitmsg.com:443",
+    "secure": false,
+    "timeout": 360000,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/portal": ""
+    },
+    "changeOrigin": true
+  },
+  "/loc/*": {
+    "target": "http://six5:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/loc": "api"
+    },
+    "changeOrigin": true
+  },
+  "/ip/*": {
+    "target": "https://www.cloudflare.com/cdn-cgi/trace:443",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/ip": ""
+    },
+    "changeOrigin": true
+  },
+  "/backend/*": {
+    "target": "http://six5-portal-svcs-dev.traefik.aws.submitmsg.com:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/backend": ""
+    },
+    "changeOrigin": true
+  },
+  "/rulesbaseurl/*": {
+    "target": "http://dev.smpp-routing-rules.traefik.aws.submitmsg.com:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/rulesbaseurl": ""
+    },
+    "changeOrigin": true
+  },
+  "/tradingrulesbaseurl/*": {
+    "target": "http://dev.smpp-trading-rules.traefik.aws.submitmsg.com:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/tradingrulesbaseurl": ""
+    },
+    "changeOrigin": true
+  },
+  "/smsplatformapi/*": {
+    "target": "http://sms-platform-api.traefik.aws.submitmsg.com:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/smsplatformapi": ""
+    },
+    "changeOrigin": true
+  },
+  "/pivs/*": {
+    "target": "http://pivs.traefik.aws.submitmsg.com:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/pivs": ""
+    },
+    "changeOrigin": true
+  },
+  "/cdrextractor/*": {
+    "target": "http://cdr-extractor-prod.traefik.aws.submitmsg.com:80",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/cdrextractor": ""
+    },
+    "changeOrigin": true
+  }
+
+}
