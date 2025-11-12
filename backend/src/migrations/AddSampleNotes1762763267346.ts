@@ -47,13 +47,13 @@ export class AddSampleNotes1762763267346 implements MigrationInterface {
         title: 'Рабочие задачи',
         content:
           'Задачи на сегодня: сделать ревью кода, провести встречу с командой, обновить документацию.',
-        updatedAt: new Date('2023-11-10T10:30:00'),
+        updatedAt: new Date('2025-11-10T10:30:00'),
       },
       {
         title: 'Важная информация',
         content:
           'Не забудьте проверить отчеты за прошедшую неделю, а также подготовить материалы для презентации.',
-        updatedAt: new Date('2023-11-09T15:45:00'),
+        updatedAt: new Date('2025-11-09T15:45:00'),
       },
       {
         title: 'Мои мысли',
@@ -65,7 +65,7 @@ export class AddSampleNotes1762763267346 implements MigrationInterface {
         title: 'Планы на завтра',
         content:
           'Завтра с утра проверить все серверы и подготовить отчет по задачам за неделю.',
-        updatedAt: new Date('2023-11-10T09:00:00'),
+        updatedAt: new Date('2025-11-10T09:00:00'),
       },
       {
         title: 'Вопросы по проекту',
@@ -77,19 +77,19 @@ export class AddSampleNotes1762763267346 implements MigrationInterface {
         title: 'Идеи для улучшений',
         content:
           'Подумать, как улучшить производительность системы и ускорить процессы обработки данных.',
-        updatedAt: new Date('2023-11-08T18:00:00'),
+        updatedAt: new Date('2025-11-08T18:00:00'),
       },
       {
         title: 'Запрос на обучение',
         content:
           'Нужно пройти курс по безопасности данных. Запросить доступ и выбрать время для занятий.',
-        updatedAt: new Date('2023-11-07T14:00:00'),
+        updatedAt: new Date('2025-11-07T14:00:00'),
       },
       {
         title: 'Моменты для встречи',
         content:
           'Запланировать встречу с клиентом для обсуждения новых требований к продукту.',
-        updatedAt: new Date('2023-11-06T11:00:00'),
+        updatedAt: new Date('2025-11-06T11:00:00'),
       },
     ]);
   }
