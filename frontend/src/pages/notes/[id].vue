@@ -2,27 +2,24 @@
   <div class="p-2 bg-gray-100 mx-auto h-full">
     <div class="bg-white p-6 rounded-lg shadow-lg mx-auto w-4xl">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ item.title }}</h2>
-      <p class="text-gray-600 mb-4">
+      <div class="text-gray-600 mb-4">
         <input class="t-input mb-2 w-full" v-model="item.title" placeholder="Название" />
 
-        <textarea class="t-input mb-2 w-full min-h-50" v-model="item.content" placeholder="Контент" />
+        <textarea class="t-input mb-2 w-full min-h-50" v-model="item.content" placeholder="Контент"></textarea>
 
+        <div class="mr-5">
+          <span class="min-w-40 inline-block"> Дата создания: </span>
 
-          <div class="mr-5">
-            <span class="min-w-40 inline-block">
-              Дата создания:
-            </span> 
-            {{ item.createdAt }}
-          </div>
+          {{ item.createdAt }}
+        </div>
 
-          <div v-if="item.updatedAt">
-            <span class="min-w-40 inline-block">
-              Дата обновления:
-            </span> 
-            {{ item.updatedAt }}
-          </div>
+        <div v-if="item.updatedAt">
+          <span class="min-w-40 inline-block"> Дата обновления: </span>
 
-      </p>
+          {{ item.updatedAt }}
+        </div>
+      </div>
+
       <div class="flex justify-end space-x-2">
         <div v-if="noteStore.isLoading" class="flex items-center justify-center mr-5">
           <div class="w-8 h-8 border-4 border-t-blue-500 border-transparent rounded-full animate-spin"></div>
@@ -77,7 +74,7 @@ export default defineComponent({
       const { id } = getNote()
       const { title, content } = item.value
 
-      await noteStore.update({id, title, content} as INote)
+      await noteStore.update({ id, title, content } as INote)
     }
 
     const onRemove = async () => {
@@ -89,10 +86,10 @@ export default defineComponent({
 
     const onFetch = async () => {
       const route = useRoute()
+
       const id = (route.params as { id: number }).id
 
       await noteStore.fetchById(id)
-
     }
 
     onMounted(async () => {

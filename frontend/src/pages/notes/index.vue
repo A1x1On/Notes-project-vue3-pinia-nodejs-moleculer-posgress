@@ -3,7 +3,8 @@
     <div v-if="modal.show" class="t-modal">
       <div class="bg-white p-6 rounded-lg shadow-lg w-3xl">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ modal.title }}</h2>
-        <p class="text-gray-600 mb-4">
+
+        <div class="text-gray-600 mb-4">
           <input
             class="t-input mb-2 w-full"
             v-model="modal.data.title"
@@ -18,8 +19,9 @@
             v-model="modal.data.content"
             :disabled="!isEdit && !isInsert"
             placeholder="Контент"
-          />
-        </p>
+          ></textarea>
+        </div>
+
         <div class="flex justify-end space-x-2">
           <div v-if="noteStore.isLoading" class="flex items-center justify-center mr-5">
             <div class="w-8 h-8 border-4 border-t-blue-500 border-transparent rounded-full animate-spin"></div>
@@ -35,10 +37,18 @@
     </div>
 
     <div class="flex flex-col p-5 bg-white mx-auto h-full rounded-lg max-w-5xl overflow-auto">
-      <button class="t-btn--primary float-right mr-2" @click.stop="onShowInsert()">Добавить</button>
+      <button class="t-btn--primary float-right mb-1" @click.stop="onShowInsert()">Добавить</button>
+
+      <input
+        v-model="search"
+        type="text"
+        class="p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Поиск"
+      />
+
       <div
         class="w-full bg-gray-200 p-2 px-3 my-2 flex items-center justify-between rounded-md cursor-pointer hover:bg-gray-300"
-        v-for="item in noteStore.data"
+        v-for="item in filteredData"
         @click="onShowUpdate(item)"
       >
         <div class="ml-2">
@@ -80,6 +90,18 @@ export default defineComponent({
       title: '',
       mode: 'update',
       data: NOTE,
+    })
+
+    const search = ref<string>('')
+
+    const filteredData = computed(() => {
+      if (search) {
+        return noteStore.data.filter(
+          (f) =>
+            f.title.toLocaleLowerCase().indexOf(search.value.toLocaleLowerCase()) !== -1 ||
+            (f.content && f.content.toLocaleLowerCase().indexOf(search.value.toLocaleLowerCase()) !== -1),
+        )
+      }
     })
 
     const isEdit = computed(() => modal.value.mode === 'update')
@@ -152,10 +174,14 @@ export default defineComponent({
     onMounted(async () => {
       await onFetch()
     })
+
     return {
       noteStore,
 
       modal,
+      search,
+
+      filteredData,
       isEdit,
       isInsert,
 
