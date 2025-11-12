@@ -96,11 +96,24 @@ export default defineComponent({
 
     const filteredData = computed(() => {
       if (search) {
-        return noteStore.data.filter(
-          (f) =>
-            f.title.toLocaleLowerCase().indexOf(search.value.toLocaleLowerCase()) !== -1 ||
-            (f.content && f.content.toLocaleLowerCase().indexOf(search.value.toLocaleLowerCase()) !== -1),
-        )
+        return noteStore.data
+          .filter(
+            (f) =>
+              f.title.toLocaleLowerCase().indexOf(search.value.toLocaleLowerCase()) !== -1 ||
+              (f.content && f.content.toLocaleLowerCase().indexOf(search.value.toLocaleLowerCase()) !== -1),
+          )
+          .sort((a, b) => {
+            if (!a.updatedAt || !b.updatedAt) return -1
+
+            const aTime = new Date(a.updatedAt).getTime()
+            const bTime = new Date(b.updatedAt).getTime()
+
+            if (aTime < bTime) return 1
+            if (aTime > bTime) return -1
+            return 0
+          })
+      } else {
+        return noteStore.data
       }
     })
 
