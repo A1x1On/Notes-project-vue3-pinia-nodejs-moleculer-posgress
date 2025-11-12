@@ -1,41 +1,43 @@
 <template>
-  <div class="p-2 bg-gray-100 mx-auto h-full">
-    <div v-if="modal.show" class="t-modal">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-3xl">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ modal.title }}</h2>
+  <div v-if="modal.show" class="t-modal">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-3xl">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ modal.title }}</h2>
 
-        <div class="text-gray-600 mb-4">
-          <input
-            class="t-input mb-2 w-full"
-            v-model="modal.data.title"
-            :disabled="!isEdit && !isInsert"
-            placeholder="Название"
-          />
+      <div class="text-gray-600 mb-4">
+        <input
+          class="t-input mb-2 w-full"
+          v-model="modal.data.title"
+          :disabled="!isEdit && !isInsert"
+          placeholder="Название"
+        />
 
-          <br />
+        <br />
 
-          <textarea
-            class="t-input mb-2 w-full min-h-30"
-            v-model="modal.data.content"
-            :disabled="!isEdit && !isInsert"
-            placeholder="Контент"
-          ></textarea>
+        <textarea
+          class="t-input mb-2 w-full min-h-30"
+          v-model="modal.data.content"
+          :disabled="!isEdit && !isInsert"
+          placeholder="Контент"
+        ></textarea>
+      </div>
+
+      <div class="flex justify-end space-x-2">
+        <div v-if="noteStore.isLoading" class="flex items-center justify-center mr-5">
+          <div class="w-8 h-8 border-4 border-t-blue-500 border-transparent rounded-full animate-spin"></div>
         </div>
 
-        <div class="flex justify-end space-x-2">
-          <div v-if="noteStore.isLoading" class="flex items-center justify-center mr-5">
-            <div class="w-8 h-8 border-4 border-t-blue-500 border-transparent rounded-full animate-spin"></div>
-          </div>
+        <button @click="onCloseModal" class="t-btn--secondary">Отмена</button>
 
-          <button @click="onCloseModal" class="t-btn--secondary">Отмена</button>
-
-          <button v-if="isInsert" @click="onInsert" class="t-btn--success">Добавить</button>
-          <button v-else-if="isEdit" @click="onSave" class="t-btn--success">Сохранить</button>
-          <button v-else-if="!isEdit && !isInsert" @click="onRemove" class="t-btn--success">Удалить</button>
-        </div>
+        <button v-if="isInsert" @click="onInsert" class="t-btn--success">Добавить</button>
+        <button v-else-if="isEdit" @click="onSave" class="t-btn--success">Сохранить</button>
+        <button v-else-if="!isEdit && !isInsert" @click="onRemove" class="t-btn--success">Удалить</button>
       </div>
     </div>
+  </div>
 
+  <Popover ref="refPopover" />
+
+  <div class="p-2 bg-gray-100 mx-auto h-full">
     <div class="flex flex-col p-5 bg-white mx-auto h-full rounded-lg max-w-5xl overflow-auto">
       <button class="t-btn--primary float-right mb-1" @click.stop="onShowInsert()">Добавить</button>
 
@@ -79,6 +81,8 @@ import { useNoteStore } from '@/stores/NoteStore'
 
 import { type INote, NOTE } from '@/entities/note'
 
+import { POPOVER } from '@/constants'
+
 export default defineComponent({
   components: {},
   setup() {
@@ -93,6 +97,8 @@ export default defineComponent({
     })
 
     const search = ref<string>('')
+
+    const refPopover = ref<IPopover>(POPOVER)
 
     const filteredData = computed(() => {
       if (search) {
@@ -140,12 +146,20 @@ export default defineComponent({
     const onInsert = async () => {
       const { title, content } = modal.value.data
 
-      await noteStore.insert([
-        {
-          title,
-          content,
-        },
-      ])
+      await noteStore
+        .insert([
+          {
+            title,
+            content,
+          },
+        ])
+        .catch((error) => {
+          if (refPopover.value && error.response?.data?.error) {
+            refPopover.value.type = 1
+            refPopover.value.title = error.response.data.error
+            refPopover.value.showPopover()
+          }
+        })
       onCloseModal()
       onFetch()
     }
@@ -160,7 +174,14 @@ export default defineComponent({
     }
 
     const onSave = async () => {
-      await noteStore.update(modal.value.data)
+      await noteStore.update(modal.value.data).catch((error) => {
+        if (refPopover.value && error.response?.data?.error) {
+          refPopover.value.type = 1
+          refPopover.value.title = error.response.data.error
+          refPopover.value.showPopover()
+        }
+      })
+
       onCloseModal()
       onFetch()
     }
@@ -193,6 +214,8 @@ export default defineComponent({
 
       modal,
       search,
+
+      refPopover,
 
       filteredData,
       isEdit,

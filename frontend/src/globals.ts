@@ -28,4 +28,11 @@ declare global {
     mode: 'update' | 'delete' | 'insert'
     data: T
   }
+
+  interface IPopover {
+    type: number
+    title: string
+    content: string
+    showPopover: () => undefined
+  }
 }
