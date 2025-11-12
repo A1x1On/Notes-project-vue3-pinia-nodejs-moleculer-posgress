@@ -53,19 +53,13 @@ export default defineComponent({
   setup() {
     const noteStore = useNoteStore()
 
-    const modal = ref<IModal<INote>>({
-      show: false,
-      title: '',
-      mode: 'update',
-      data: NOTE,
-    })
-
     const item = computed(() => {
       if (!noteStore.data.length) return NOTE
 
-      const { title, content, createdAt, updatedAt } = noteStore.data[0]
+      const { id, title, content, createdAt, updatedAt } = getNote()
 
       return {
+        id,
         title,
         content,
         createdAt: formatDate(createdAt),
@@ -73,12 +67,23 @@ export default defineComponent({
       }
     })
 
+    const getNote = () => {
+      if (!noteStore.data.length) return NOTE
+
+      return noteStore.data[0]
+    }
+
     const onSave = async () => {
-      await noteStore.update(modal.value.data)
+      const { id } = getNote()
+      const { title, content } = item.value
+
+      await noteStore.update({id, title, content} as INote)
     }
 
     const onRemove = async () => {
-      await noteStore.remove(modal.value.data.id)
+      const note = getNote()
+
+      await noteStore.remove(note.id)
       window.location.replace('/notes')
     }
 
@@ -88,7 +93,6 @@ export default defineComponent({
 
       await noteStore.fetchById(id)
 
-      // modal.value.data = noteStore.data[0]
     }
 
     onMounted(async () => {
@@ -97,7 +101,6 @@ export default defineComponent({
     return {
       noteStore,
 
-      // modal,
       item,
 
       onSave,
